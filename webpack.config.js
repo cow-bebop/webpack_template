@@ -5,6 +5,10 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
+  // npx webpackコマンドで--mode developmentとしなくてもdevelopmentモードになる。productionがデフォルト。
+  mode: "development",
+  // source-mapは開発用。本番用の時は外す。ブラウザで表示するのが遅くなるから。
+  devtool: "source-map",
   entry: "./src/javascripts/main.js",
   output: {
     path: path.resolve(__dirname, "./dist"),
@@ -13,6 +17,21 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.js/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "babel-loader",
+            options: {
+              presets: [
+                ["@babel/preset-env", { targets: "> 0.25%, not dead" }],
+                "@babel/preset-react"
+              ]
+            }
+          }
+        ]
+      },
+      {
         test: /\.(css|sass|scss)/,
         use: [
           // loaderは下から上に適応される。重要。
@@ -20,7 +39,11 @@ module.exports = {
             loader: MiniCssExtractPlugin.loader
           },
           {
-            loader: "css-loader"
+            loader: "css-loader",
+            // trueでcssの開発が便利になる。ファイルが重くなるので、本番環境ではfalse(OFF)にする
+            options: {
+              sourceMap: false
+            }
           },
           {
             loader: "sass-loader"
@@ -28,13 +51,22 @@ module.exports = {
         ]
       },
       {
-        test: /\.(png|jpg)/,
+        test: /\.(png|jpg|jpeg)/,
         use: [
           {
             loader: "file-loader",
             options: {
               esModule: false,
               name: "images/[name].[ext]"
+            }
+          },
+          {
+            loader: "image-webpack-loader",
+            options: {
+              mozjpeg: {
+                progressive: true,
+                quality: 65
+              }
             }
           }
         ]

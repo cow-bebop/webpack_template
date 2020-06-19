@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack:///./src/stylesheets/main.scss"],"names":[],"mappings":"AAAA,KAAK,gBAAgB,SAAS,kBAAkB,mCAAmC,eAAe,aAAa,mBAAmB","file":"./stylesheets/main.css","sourcesContent":["body{color:lightblue}.content{margin-right:16px}.content .title,.content .title-lg{font-size:24px;color:orange}.content .title-lg{font-size:32px}\n"],"sourceRoot":""}
