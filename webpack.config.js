@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 // {}はclean-webpack-pluginクラスだけを読み込むという意味
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const VueLoaderPlugin = require("vue-loader/lib/plugin");
 
 module.exports = {
   // npx webpackコマンドで--mode developmentとしなくてもdevelopmentモードになる。productionがデフォルト。
@@ -16,6 +17,15 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.vue/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "vue-loader"
+          }
+        ]
+      },
       {
         test: /\.js/,
         exclude: /node_modules/,
@@ -88,6 +98,7 @@ module.exports = {
     ]
   },
   plugins: [
+    new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
       filename: "./stylesheets/main.css"
     }),
